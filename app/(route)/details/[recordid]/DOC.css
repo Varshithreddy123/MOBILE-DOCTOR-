@@ -1,0 +1,149 @@
+/* DOC.css */
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+  }
+  
+  .tab-container {
+    display: flex;
+    gap: 5px;
+    margin-bottom: 15px;
+  }
+  
+  .tab {
+    padding: 8px 16px;
+    background: #f0f0f0;
+    border: 1px solid #ddd;
+    border-radius: 4px 4px 0 0;
+    cursor: pointer;
+    font-size: 14px;
+  }
+  
+  .active-tab {
+    background-color: #fff;
+    border-bottom: 1px solid #fff;
+    font-weight: bold;
+  }
+  
+  .content-container {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 20px;
+    background-color: #fff;
+    min-height: 500px;
+  }
+  
+  .content-layout {
+    display: flex;
+    gap: 20px;
+    height: 100%;
+  }
+  
+  .left-content {
+    flex: 7;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .right-content {
+    flex: 3;
+  }
+  
+  .top-section {
+    display: flex;
+    gap: 20px;
+  }
+  
+  .photo-box {
+    width: 120px;
+    height: 120px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+  }
+  
+  .doctor-info {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .doctor-name {
+    display: inline-block;
+    padding: 5px 10px;
+    background-color: #e6f7ff;
+    border: 1px solid #91d5ff;
+    border-radius: 4px;
+    color: #1890ff;
+    font-size: 14px;
+  }
+  
+  .address-input {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    width: 200px;
+    font-size: 14px;
+  }
+  
+  .book-button {
+    padding: 6px 12px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+    width: fit-content;
+    font-size: 14px;
+  }
+  
+  .book-button:hover {
+    background-color: #f5f5f5;
+  }
+  
+  .description-box {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 15px;
+    min-height: 120px;
+  }
+  
+  .description-title {
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .suggestion-box {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 15px;
+    height: 100%;
+    min-height: 300px;
+  }
+  
+  .suggestion-title {
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  @media (max-width: 768px) {
+    .content-layout {
+      flex-direction: column;
+    }
+    
+    .top-section {
+      flex-direction: column;
+    }
+    
+    .photo-box {
+      width: 100%;
+      height: 180px;
+    }
+    
+    .address-input {
+      width: 100%;
+    }
+  }

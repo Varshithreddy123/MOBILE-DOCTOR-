@@ -1,101 +1,142 @@
-import Image from "next/image";
+"use client";
+import React, { useRef, useState, useMemo, useCallback } from "react";
+import Link from "next/link";
+import { ChevronLeft, ChevronRight, Search } from "lucide-react";
+import DoctorsList from "./_components/DoctorsList";
 
-export default function Home() {
+// ✅ Memoized Doctor List to Prevent Unnecessary Re-renders
+const MemoizedDoctorsList = React.memo(DoctorsList, (prevProps, nextProps) => {
+  return prevProps.selectedCategory === nextProps.selectedCategory;
+});
+
+export default function DoctorCategories() {
+  const scrollRef = useRef(null);
+  const [searchTerm, setSearchTerm] = useState("");
+
+  // ✅ Updated Category Data with New Image Links
+  const allCategories = useMemo(
+    () => [
+      {
+        title: "Dermatologist",
+        image: "https://res.cloudinary.com/dfpw0itu3/image/upload/v1741080751/kp9c1nxmqvsq8pq06z3q.avif",
+      },
+      {
+        title: "Cardiologist",
+        image: "https://res.cloudinary.com/dfpw0itu3/image/upload/v1741080437/f3iw2tfcvve32tn3uzwo.webp",
+      },
+      {
+        title: "Orthopedic",
+        image: "https://res.cloudinary.com/dfpw0itu3/image/upload/v1741081519/r9mxynyo58o1mytudule.jpg",
+      },
+      {
+        title: "Neurologist",
+        image: "https://res.cloudinary.com/dfpw0itu3/image/upload/v1741081036/fvgq0koechd7hzfbyjru.webp",
+      },
+      {
+        title: "Otology",
+        image: "https://res.cloudinary.com/dfpw0itu3/image/upload/v1741081889/zd3xhyvxh93kwojkw6xp.jpg",
+      },
+      {
+        title: "General Doctor",
+        image: "https://res.cloudinary.com/dfpw0itu3/image/upload/v1741081738/ibcppbgwkbjbs6ptkn8o.avif",
+      },
+      {
+        title: "Surgeon",
+        image: "https://res.cloudinary.com/dfpw0itu3/image/upload/v1741523656/dxlgqsswqc3lgorzgp6c.jpg",
+      },
+      {
+        title: "Psychotropic",
+        image: "https://res.cloudinary.com/dfpw0itu3/image/upload/v1741523821/uyrj8muyinx6wgzazcxj.jpg",
+      },
+      {
+        title: "Eye Specialist",
+        image: "https://res.cloudinary.com/dfpw0itu3/image/upload/v1741523909/mhrsf70idkxavirlwk0c.jpg",
+      },
+    ],
+    []
+  );
+
+  // ✅ Filter and Memoize Displayed Categories
+  const displayedCategories = useMemo(() => {
+    return searchTerm
+      ? allCategories.filter((category) =>
+          category.title.toLowerCase().includes(searchTerm.toLowerCase())
+        )
+      : allCategories.slice(0, 4);
+  }, [searchTerm, allCategories]);
+
+  // ✅ Optimized Scroll Function
+  const scroll = useCallback((direction) => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollBy({
+        left: direction === "left" ? -250 : 250,
+        behavior: "smooth",
+      });
+    }
+  }, []);
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
+    <div className="relative px-6 py-10 max-w-screen-lg mx-auto">
+      {/* ✅ Search Bar */}
+      <div className="mb-6 flex items-center bg-white border border-gray-300 rounded-lg p-2 shadow-md">
+        <Search className="w-5 h-5 text-gray-500 mr-2" />
+        <input
+          type="text"
+          placeholder="Search categories..."
+          className="w-full p-2 outline-none text-gray-700"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
         />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.js
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+      </div>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+      {/* ✅ Scrollable Categories */}
+      <div className="relative">
+        {/* Left Scroll Button */}
+        <button
+          className="absolute left-0 top-1/2 -translate-y-1/2 bg-gray-200 p-2 rounded-full shadow-md hover:bg-gray-300 transition z-10"
+          onClick={() => scroll("left")}
+          aria-label="Scroll left"
+        >
+          <ChevronLeft className="w-6 h-6 text-blue-600" />
+        </button>
+
+        {/* ✅ Category List */}
+        <div
+          ref={scrollRef}
+          className="flex space-x-4 overflow-hidden scroll-smooth p-4 bg-gray-50 rounded-lg snap-x snap-mandatory whitespace-nowrap"
+        >
+          {displayedCategories.length > 0 ? (
+            displayedCategories.map((category, index) => (
+              <Link key={index} href={`/search/${category.title.toLowerCase().replace(/ /g, "-")}`} passHref>
+                <div className="min-w-[140px] md:min-w-[160px] lg:min-w-[180px] flex flex-col items-center bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition snap-center cursor-pointer">
+                  <img
+                    src={category.image}
+                    alt={category.title}
+                    className="w-16 h-16 object-cover rounded-full"
+                  />
+                  <p className="mt-2 text-sm font-semibold text-gray-700 text-center">
+                    {category.title}
+                  </p>
+                </div>
+              </Link>
+            ))
+          ) : (
+            <p className="text-gray-500 text-center w-full">No categories found</p>
+          )}
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+
+        {/* Right Scroll Button */}
+        <button
+          className="absolute right-0 top-1/2 -translate-y-1/2 bg-gray-200 p-2 rounded-full shadow-md hover:bg-gray-300 transition z-10"
+          onClick={() => scroll("right")}
+          aria-label="Scroll right"
         >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+          <ChevronRight className="w-6 h-6 text-blue-600" />
+        </button>
+      </div>
+
+      {/* ✅ Optimized Doctors List */}
+      <MemoizedDoctorsList selectedCategory={searchTerm} />
     </div>
   );
 }
