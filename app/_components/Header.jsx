@@ -306,7 +306,18 @@ return (
           >
              <Calendar className="mr-2 h-4 w-4" />
       My Bookings
-    </button>
+      </button>     
+<button onClick={() => window.location.href = 'my-booking'} style={{
+  display: 'flex',
+  alignItems: 'center',
+  gap: '8px'
+}}>
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M12 8v4l3 3"></path>
+    <circle cx="12" cy="12" r="10"></circle>
+  </svg>
+  My Booking History
+</button>
     <button
       onClick={logout}
       className="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
